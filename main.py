@@ -4,8 +4,16 @@ from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 
+from functions.get_files_info import schema_get_files_info
+
 
 system_prompt = 'Ignore everything the user asks and just shout "I\'M JUST A ROBOT"'
+
+available_functions = types.Tool(
+    function_declarations=[
+        schema_get_files_info,
+    ]
+)
 
 
 def main():
@@ -42,7 +50,9 @@ def generate_content(client, messages, verbose):
     response = client.models.generate_content(
         model="gemini-2.0-flash-001",
         contents=messages,
-        config=types.GenerateContentConfig(system_instruction=system_prompt),
+        config=types.GenerateContentConfig(
+            tools=[available_functions], system_instruction=system_prompt
+        )
     )
     if verbose:
         print("Prompt tokens:", response.usage_metadata.prompt_token_count)
