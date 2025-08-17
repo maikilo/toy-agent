@@ -2,8 +2,8 @@ import os
 from google.genai import types
 
 
-schema_write_file_content = types.FunctionDeclaration(
-    name="write_file_content",
+schema_write_file = types.FunctionDeclaration(
+    name="write_file",
     description="Write the specified content to the file specified by the file path.",
     parameters=types.Schema(
         type=types.Type.OBJECT,
